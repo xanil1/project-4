@@ -20,12 +20,21 @@
                     @foreach($users as $user)
                         <div class="mb-4 flex items-center justify-between">
                             <div>{{ $user->name }} - {{ $user->email }} - {{ $user->roles->pluck('name')->implode(', ') }}</div>
-                            <div class="mt-2">
+                            <div class="mt-2 flex space-x-2">
+                                <!-- Admin maken knop -->
                                 <form action="{{ route('users.promote', $user->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('PUT')
                                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         admin maken
+                                    </button>
+                                </form>
+                                <!-- Verwijderen knop -->
+                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?')">
+                                        Verwijderen
                                     </button>
                                 </form>
                             </div>

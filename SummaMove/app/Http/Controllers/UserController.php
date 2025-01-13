@@ -62,7 +62,8 @@ class UserController extends Controller
         }
     }
 
-    public function add()
+
+public function add()
 {
     $auth = auth()->user();
 
