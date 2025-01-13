@@ -16,19 +16,12 @@ class UsersTableSeeder extends Seeder
         User::truncate();
         DB::table('role_user')->truncate();
 
-        $managerRole = Role::where('name', 'manager')->first();
-        $medewerkerRole = Role::where('name', 'medewerker')->first();
-        $klantRole = Role::where('name', 'klant')->first();
+        $adminRole = Role::where('name', 'admin')->first();
+        $studentRole = Role::where('name', 'student')->first();
 
-        $manager = User::create([
-            'name' => 'Manager',
+        $admin = User::create([
+            'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('12345678')
-        ]);
-
-        $medewerker = User::create([
-            'name' => 'Medewerker',
-            'email' => 'medewerker@gmail.com',
             'password' => Hash::make('12345678')
         ]);
 
@@ -47,10 +40,9 @@ class UsersTableSeeder extends Seeder
 
         foreach ($users as $userData) {
             $user = User::create($userData);
-            $user->roles()->attach($klantRole);
+            $user->roles()->attach($studentRole);
         }
 
-        $manager->roles()->attach($managerRole);
-        $medewerker->roles()->attach($medewerkerRole);
+        $admin->roles()->attach($adminRole);
     }
 }

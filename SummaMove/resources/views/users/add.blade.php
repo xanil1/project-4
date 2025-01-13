@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Klant naar Medewerker') }}
+            {{ __('Student naar admin') }}
         </h2>
     </x-slot>
 
@@ -25,7 +25,7 @@
                                     @csrf
                                     @method('PUT')
                                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        Medewerker maken
+                                        admin maken
                                     </button>
                                 </form>
                             </div>

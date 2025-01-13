@@ -29,7 +29,7 @@
                     <!-- Centered Button to navigate to add.blade.php -->
                     <div class="mt-8 flex justify-center">
                         <a href="{{ route('users.add') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Klanten Beheren
+                        studenten Beheren
                         </a>
                     </div>
                 </div>
