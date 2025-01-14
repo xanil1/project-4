@@ -22,6 +22,11 @@
                             <div>{{ $user->name }} - {{ $user->email }} - {{ $user->roles->pluck('name')->implode(', ') }}</div>
                             <div class="mt-2 flex space-x-2">
                                 <!-- Admin maken knop -->
+                                <form action="{{ route('users.edit', $user->id) }}" method="GET">
+                                    @csrf
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Wijzigen</button>
+                                </form>
+                                
                                 <form action="{{ route('users.promote', $user->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('PUT')

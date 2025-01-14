@@ -24,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::get('/users/add', [UserController::class, 'add'])->name('users.add');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::put('/users/{user}/promote', [UserController::class, 'promote'])->name('users.promote');
 });
 

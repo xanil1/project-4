@@ -40,10 +40,30 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $auth = auth()->user();
-
+    
         if ($auth->hasRole('admin')) {
+            // Validate inputs
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'password' => 'nullable|string|min:8|confirmed', // Wachtwoord alleen als het is ingevuld
+            ]);
+    
+            // Update user data
+            $user->name = $request->name;
+            $user->email = $request->email;
+    
+            // Check if password is filled and update if so
+            if ($request->filled('password')) {
+                $user->password = bcrypt($request->password);
+            }
+    
+            $user->save();
+    
+            // Update roles
             $user->roles()->sync($request->role_id);
-            return redirect()->route('users.index')->with('success', 'Rol van gebruiker succesvol bijgewerkt.');
+    
+            return redirect()->route('users.index')->with('success', 'Gebruiker succesvol bijgewerkt.');
         } else {
             return view('dashboard');
         }
@@ -95,4 +115,44 @@ public function promote(Request $request, User $user)
         return view('dashboard');
     }
 }
+
+public function create()
+{
+    $auth = auth()->user();
+
+    if ($auth->hasRole('admin')) {
+        return view('users.create');
+    } else {
+        return view('dashboard');
+    }
 }
+
+public function store(Request $request)
+{
+    $auth = auth()->user();
+
+    if ($auth->hasRole('admin')) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        $studentRole = Role::where('name', 'student')->first();
+        if ($studentRole) {
+            $user->roles()->attach($studentRole->id);
+        }
+
+        return redirect()->route('users.index')->with('success', 'Gebruiker succesvol aangemaakt en automatisch als student toegewezen.');
+    } else {
+        return view('dashboard');
+    }
+}
+}
+
