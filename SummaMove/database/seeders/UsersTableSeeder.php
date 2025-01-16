@@ -36,6 +36,16 @@ class UsersTableSeeder extends Seeder
                 'email' => 'test@gmail.com',
                 'password' => Hash::make('12345678')
             ],
+            [
+                'name' => 'test2',
+                'email' => 'test2@gmail.com',
+                'password' => Hash::make('12345678')
+            ],
+            [
+                'name' => 'Test3',
+                'email' => 'test3@gmail.com',
+                'password' => Hash::make('12345678')
+            ],
         ];
 
         foreach ($users as $userData) {
