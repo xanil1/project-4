@@ -22,6 +22,12 @@
                             {{ __('Gebruikers') }}
                         </x-nav-link>
                     @endif
+
+                    @if(auth()->user()->hasRole('admin'))
+                    <x-nav-link :href="route('oefeningen.index')" :active="request()->routeIs('oefeningen.index')">
+                        {{ __('Oefeningen') }}
+                    </x-nav-link>
+                @endif
                 </div>
             </div>
 

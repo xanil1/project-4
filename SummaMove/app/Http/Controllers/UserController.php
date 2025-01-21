@@ -40,7 +40,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $auth = auth()->user();
-    
+
         if ($auth->hasRole('admin')) {
             // Validate inputs
             $request->validate([
@@ -48,21 +48,21 @@ class UserController extends Controller
                 'email' => 'required|email|unique:users,email,' . $user->id,
                 'password' => 'nullable|string|min:8|confirmed', // Wachtwoord alleen als het is ingevuld
             ]);
-    
+
             // Update user data
             $user->name = $request->name;
             $user->email = $request->email;
-    
+
             // Check if password is filled and update if so
             if ($request->filled('password')) {
                 $user->password = bcrypt($request->password);
             }
-    
+
             $user->save();
-    
+
             // Update roles
             $user->roles()->sync($request->role_id);
-    
+
             return redirect()->route('users.index')->with('success', 'Gebruiker succesvol bijgewerkt.');
         } else {
             return view('dashboard');
@@ -155,4 +155,3 @@ public function store(Request $request)
     }
 }
 }
-
