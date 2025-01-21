@@ -7,8 +7,16 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Knop om een nieuwe oefening aan te maken, rechts uitgelijnd -->
+            <div class="mb-4 flex justify-end">
+                <a href="{{ route('oefeningen.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Nieuwe oefening
+                </a>
+            </div>
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <!-- Oefeningen Lijst -->
                     @forelse($oefeningen as $oefening)
                         <div class="mb-4 flex items-center justify-between">
                             <div>
@@ -32,12 +40,6 @@
                         <p class="text-center text-gray-600">Geen oefeningen gevonden.</p>
                     @endforelse
 
-                    <!-- Centered Button to navigate to create.blade.php -->
-                    <div class="mt-8 flex justify-center">
-                        <a href="{{ route('oefeningen.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Nieuwe Oefening Aanmaken
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
