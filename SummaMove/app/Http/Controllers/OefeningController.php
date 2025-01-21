@@ -72,16 +72,40 @@ class OefeningController extends Controller
      */
     public function update(Request $request, Oefening $oefening)
     {
+        // Valideer de ingevoerde gegevens
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'required|string'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Afbeelding is optioneel bij bewerken
         ]);
 
+        // Controleer of er een nieuwe afbeelding is geüpload
+        if ($request->hasFile('image')) {
+            // Verwijder de oude afbeelding uit de public map
+            if ($oefening->image) {
+                $oldImagePath = public_path($oefening->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath); // Verwijder de oude afbeelding
+                }
+            }
+
+            // Verwerk de nieuwe afbeelding
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension(); // Unieke naam voor bestand
+            $destinationPath = public_path('images'); // Doelmap in de public map
+            $image->move($destinationPath, $imageName); // Verplaats bestand naar de map
+
+            // Sla de nieuwe afbeeldingnaam op in de database
+            $validated['image'] = 'images/' . $imageName;
+        }
+
+        // Werk de oefening bij met de nieuwe gegevens
         $oefening->update($validated);
 
         return redirect()->route('oefeningen.index')->with('success', 'Oefening succesvol bijgewerkt!');
     }
+
+
 
 
     /**
