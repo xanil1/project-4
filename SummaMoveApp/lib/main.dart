@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
+import 'oefenen_screen.dart';  // Voeg de OefenenScreen import toe
 
 void main() {
   runApp(MyApp());
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   final List<Widget> _screens = [
     HomeScreen(),
+    OefenenScreen(),  // Voeg OefenenScreen toe aan de lijst van schermen
   ];
 
   @override
@@ -35,7 +37,7 @@ class MainScreen extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: index,
             onTap: (int newIndex) {
-              if (newIndex == 3) {
+              if (newIndex == 2) {
                 showLicensePage(
                   context: context,
                   applicationName: 'Game Deals App',
@@ -46,7 +48,6 @@ class MainScreen extends StatelessWidget {
                 currentIndex.value = newIndex;
               }
             },
-
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.blue.shade200,
             items: const <BottomNavigationBarItem>[
@@ -55,12 +56,8 @@ class MainScreen extends StatelessWidget {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Game Info',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: 'Game IDs',
+                icon: Icon(Icons.school),  // Deze icon kan voor 'Oefenen' worden gebruikt
+                label: 'Oefenen',  // Dit label toont Oefenen
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.info),
