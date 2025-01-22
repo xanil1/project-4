@@ -29,19 +29,52 @@
                                     @csrf
                                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Wijzigen</button>
                                 </form>
-                                <form action="{{ route('oefeningen.destroy', $oefening->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Weet je zeker dat je deze oefening wilt verwijderen?')">Verwijderen</button>
-                                </form>
+
+                                <!-- Verwijderknop met modaal -->
+                                <button
+                                    onclick="openModal('{{ $oefening->id }}')"
+                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                    Verwijderen
+                                </button>
+
+                                <!-- Modaal -->
+                                <div id="modal-{{ $oefening->id }}" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                                    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                                        <h2 class="text-lg font-bold mb-4">Weet je zeker dat je deze oefening wilt verwijderen?</h2>
+                                        <p class="text-gray-600 mb-6">Naam: {{ $oefening->name }}</p>
+                                        <div class="flex justify-end space-x-4">
+                                            <button
+                                                onclick="closeModal('{{ $oefening->id }}')"
+                                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                                Annuleren
+                                            </button>
+                                            <form action="{{ route('oefeningen.destroy', $oefening->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                                    Verwijderen
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @empty
                         <p class="text-center text-gray-600">Geen oefeningen gevonden.</p>
                     @endforelse
-
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Scripts -->
+    <script>
+        function openModal(id) {
+            document.getElementById('modal-' + id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById('modal-' + id).classList.add('hidden');
+        }
+    </script>
 </x-app-layout>
