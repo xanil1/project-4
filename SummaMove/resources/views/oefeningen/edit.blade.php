@@ -29,6 +29,13 @@
                                 required>{{ $oefening->description }}</textarea>
                         </div>
 
+                        <div class="mb-4">
+                            <label for="description_en" class="block text-gray-700 font-bold mb-2">Engelse Beschrijving:</label>
+                            <textarea id="description_en" name="description_en" rows="4"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
+                                required>{{ $oefening->description_en }}</textarea>
+                        </div>
+
                         <!-- Nieuwe Afbeelding -->
                         <div class="mb-4">
                             <label for="image" class="block text-gray-700 font-bold mb-2">Nieuwe Afbeelding (optioneel):</label>

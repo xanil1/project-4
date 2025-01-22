@@ -18,44 +18,47 @@
                 <div class="p-6 text-gray-900">
                     <!-- Oefeningen Lijst -->
                     @forelse($oefeningen as $oefening)
-                        <div class="mb-4 flex items-center justify-between">
-                            <div>
-                                <h3 class="font-bold text-lg">{{ $oefening->name }}</h3>
+                        <div class="mb-6 p-4 border-b border-gray-300 flex items-center justify-between">
+                            <div class="flex flex-col w-3/4">
+                                <h3 class="font-bold text-xl">{{ $oefening->name }}</h3>
                                 <p class="text-sm text-gray-600">{{ $oefening->description }}</p>
-                                <img src="{{ asset($oefening->image) }}" alt="{{ $oefening->name }}" class="mt-2 h-16">
+                                <p class="text-sm text-gray-500 italic mt-1">English: {{ $oefening->description_en }}</p>
                             </div>
-                            <div class="flex space-x-2 mt-2">
-                                <form action="{{ route('oefeningen.edit', $oefening->id) }}" method="GET">
-                                    @csrf
-                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Wijzigen</button>
-                                </form>
+                            <div class="flex flex-col items-center justify-between w-1/4">
+                                <img src="{{ asset($oefening->image) }}" alt="{{ $oefening->name }}" class="mt-4 h-24 w-auto rounded-lg">
+                                <div class="flex space-x-2 mt-4">
+                                    <form action="{{ route('oefeningen.edit', $oefening->id) }}" method="GET">
+                                        @csrf
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Wijzigen</button>
+                                    </form>
 
-                                <!-- Verwijderknop met modaal -->
-                                <button
-                                    onclick="openModal('{{ $oefening->id }}')"
-                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                    Verwijderen
-                                </button>
+                                    <!-- Verwijderknop met modaal -->
+                                    <button
+                                        onclick="openModal('{{ $oefening->id }}')"
+                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                        Verwijderen
+                                    </button>
+                                </div>
+                            </div>
 
-                                <!-- Modaal -->
-                                <div id="modal-{{ $oefening->id }}" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-                                    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                                        <h2 class="text-lg font-bold mb-4">Weet je zeker dat je deze oefening wilt verwijderen?</h2>
-                                        <p class="text-gray-600 mb-6">Naam: {{ $oefening->name }}</p>
-                                        <div class="flex justify-end space-x-4">
-                                            <button
-                                                onclick="closeModal('{{ $oefening->id }}')"
-                                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                                                Annuleren
+                            <!-- Modaal -->
+                            <div id="modal-{{ $oefening->id }}" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                                <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                                    <h2 class="text-lg font-bold mb-4">Weet je zeker dat je deze oefening wilt verwijderen?</h2>
+                                    <p class="text-gray-600 mb-6">Naam: {{ $oefening->name }}</p>
+                                    <div class="flex justify-end space-x-4">
+                                        <button
+                                            onclick="closeModal('{{ $oefening->id }}')"
+                                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                            Annuleren
+                                        </button>
+                                        <form action="{{ route('oefeningen.destroy', $oefening->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                                Verwijderen
                                             </button>
-                                            <form action="{{ route('oefeningen.destroy', $oefening->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                                    Verwijderen
-                                                </button>
-                                            </form>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

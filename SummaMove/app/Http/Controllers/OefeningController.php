@@ -32,24 +32,22 @@ class OefeningController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'description_en' => 'required|string', // Engelse beschrijving vereist
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Krijg het bestand en bepaal het opslagpad
+        // Verwerk de afbeelding
         $image = $request->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension(); // Unieke naam voor bestand
-        $destinationPath = public_path('images'); // Doelmap in de public map
-        $image->move($destinationPath, $imageName); // Verplaats bestand naar de map
-
-        // Sla de afbeeldingnaam op in de database
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('images');
+        $image->move($destinationPath, $imageName);
         $validated['image'] = 'images/' . $imageName;
 
         // Maak de oefening aan
-        $oefening = Oefening::create($validated);
+        Oefening::create($validated);
 
         return redirect()->route('oefeningen.index')->with('success', 'Oefening aangemaakt!');
     }
-
 
     /**
      * Display the specified resource.
@@ -72,60 +70,49 @@ class OefeningController extends Controller
      */
     public function update(Request $request, Oefening $oefening)
     {
-        // Valideer de ingevoerde gegevens
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Afbeelding is optioneel bij bewerken
+            'description_en' => 'required|string', // Engelse beschrijving vereist
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Controleer of er een nieuwe afbeelding is geüpload
+        // Verwerk nieuwe afbeelding indien geüpload
         if ($request->hasFile('image')) {
-            // Verwijder de oude afbeelding uit de public map
             if ($oefening->image) {
                 $oldImagePath = public_path($oefening->image);
                 if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath); // Verwijder de oude afbeelding
+                    unlink($oldImagePath);
                 }
             }
 
-            // Verwerk de nieuwe afbeelding
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension(); // Unieke naam voor bestand
-            $destinationPath = public_path('images'); // Doelmap in de public map
-            $image->move($destinationPath, $imageName); // Verplaats bestand naar de map
-
-            // Sla de nieuwe afbeeldingnaam op in de database
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('images');
+            $image->move($destinationPath, $imageName);
             $validated['image'] = 'images/' . $imageName;
         }
 
-        // Werk de oefening bij met de nieuwe gegevens
+        // Update de oefening
         $oefening->update($validated);
 
         return redirect()->route('oefeningen.index')->with('success', 'Oefening succesvol bijgewerkt!');
     }
-
-
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Oefening $oefening)
     {
-        // Verwijder de afbeelding uit de public/images map
-        $imagePath = public_path($oefening->image);
-
-        if (file_exists($imagePath)) {
-            unlink($imagePath); // Verwijder het bestand
+        if ($oefening->image) {
+            $imagePath = public_path($oefening->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
-        // Verwijder de oefening uit de database
         $oefening->delete();
 
         return redirect()->route('oefeningen.index')->with('success', 'Oefening succesvol verwijderd!');
     }
-
-
 }
-
