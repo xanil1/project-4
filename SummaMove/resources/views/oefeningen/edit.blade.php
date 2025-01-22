@@ -1,38 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Oefening</title>
-</head>
-<body>
-    <h1>Oefening Bewerken</h1>
-    <form action="{{ route('oefeningen.update', $oefening->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Oefening Bewerken') }}
+        </h2>
+    </x-slot>
 
-        <!-- Naam en beschrijving -->
-        <label>Naam:</label><br>
-        <input type="text" name="name" value="{{ $oefening->name }}" required><br><br>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <form action="{{ route('oefeningen.update', $oefening->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
 
-        <label>Beschrijving:</label><br>
-        <textarea name="description" required>{{ $oefening->description }}</textarea><br><br>
+                        <!-- Naam -->
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-bold mb-2">Naam:</label>
+                            <input type="text" id="name" name="name" value="{{ $oefening->name }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
+                                required>
+                        </div>
 
-        <!-- Afbeelding -->
-        <label>Afbeelding:</label><br>
-        <input type="file" name="image" accept="image/*"><br><br>
+                        <!-- Beschrijving -->
+                        <div class="mb-4">
+                            <label for="description" class="block text-gray-700 font-bold mb-2">Beschrijving:</label>
+                            <textarea id="description" name="description" rows="4"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
+                                required>{{ $oefening->description }}</textarea>
+                        </div>
 
-        <!-- Huidige afbeelding -->
-        @if($oefening->image)
-        <div>
-            <label>Huidige Afbeelding:</label><br>
-            <img src="{{ asset($oefening->image) }}" alt="{{ $oefening->name }}" width="25%"><br><br>
+                        <!-- Nieuwe Afbeelding -->
+                        <div class="mb-4">
+                            <label for="image" class="block text-gray-700 font-bold mb-2">Nieuwe Afbeelding (optioneel):</label>
+                            <input type="file" id="image" name="image" accept="image/*"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500">
+                        </div>
+
+                        <!-- Huidige Afbeelding -->
+                        @if($oefening->image)
+                            <div class="mb-4">
+                                <label class="block text-gray-700 font-bold mb-2">Huidige Afbeelding:</label>
+                                <img src="{{ asset($oefening->image) }}" alt="{{ $oefening->name }}" class="h-32 rounded-lg">
+                            </div>
+                        @endif
+
+                        <!-- Opslaan knop -->
+                        <div class="flex justify-end">
+                            <button type="submit"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Opslaan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    @endif
-
-
-
-        <button type="submit">Opslaan</button>
-    </form>
-</body>
-</html>
+    </div>
+</x-app-layout>
