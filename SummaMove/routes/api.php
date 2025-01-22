@@ -31,10 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/users/{user}/promote', [UserController::class, 'promote'])->name('users.promote');
 
     // Oefening routes
-    Route::get('/oefeningen', [OefeningController::class, 'index'])->name('oefeningen.index');
-    Route::get('/oefeningen/{oefening}/edit', [OefeningController::class, 'edit'])->name('oefeningen.edit');
-    Route::delete('/oefeningen/{oefening}', [OefeningController::class, 'destroy'])->name('oefeningen.destroy');
-    Route::put('/oefeningen/{oefening}', [OefeningController::class, 'update'])->name('oefeningen.update');
-    Route::get('/oefeningen/create', [OefeningController::class, 'create'])->name('oefeningen.create');
-    Route::post('/oefeningen', [OefeningController::class, 'store'])->name('oefeningen.store');
+    Route::apiResource('oefeningen', OefeningController::class);
 });
+
+require __DIR__.'/auth.php';
