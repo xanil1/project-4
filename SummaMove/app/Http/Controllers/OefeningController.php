@@ -13,6 +13,10 @@ class OefeningController extends Controller
     public function index()
     {
         $oefeningen = Oefening::all();
+
+        if (request()->wantsJson()) {
+            return response()->json($oefeningen);
+        }
         return view('oefeningen.index', ['oefeningen' => $oefeningen]);
     }
 
@@ -46,7 +50,12 @@ class OefeningController extends Controller
         // Maak de oefening aan
         Oefening::create($validated);
 
+        if ($request->wantsJson()) {
+            return response()->json($oefening, 201);
+        }
+
         return redirect()->route('oefeningen.index')->with('success', 'Oefening aangemaakt!');
+        return response()->json($oefening, 201);
     }
 
     /**
