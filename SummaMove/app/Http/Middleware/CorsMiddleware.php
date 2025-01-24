@@ -20,4 +20,8 @@ class CorsMiddleware
             ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             ->header('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Origin, Authorization');
     }
+    
+    protected $except = [
+        'api/*',  // Dit schakelt CSRF-bescherming uit voor alle API-aanroepen
+    ];
 }

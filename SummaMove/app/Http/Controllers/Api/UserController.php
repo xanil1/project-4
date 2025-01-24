@@ -6,9 +6,40 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function login(Request $request)
+    {
+        // Valideer de input
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+    
+        // Zoek de gebruiker op basis van e-mail
+        $user = User::where('email', $request->email)->first();
+    
+        // Controleer of de gebruiker bestaat en het wachtwoord correct is
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+    
+        // Genereer een nieuw API-token
+        $token = $user->createToken('YourAppName')->plainTextToken;
+    
+        // Return het token en de naam van de gebruiker als succesvolle login
+        return response()->json([
+            'message' => 'Login successful',
+            'token' => $token,
+            'user' => [
+                'name' => $user->name,  // Voeg de gebruikersnaam toe
+            ],
+        ]);
+    }
     public function index()
     {
         $auth = auth()->user();

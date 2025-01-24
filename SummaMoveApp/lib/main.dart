@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'oefenen_screen.dart';  // Voeg de OefenenScreen import toe
+import 'oefenen_screen.dart';
+import 'login_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainScreen(),
+      home: MainScreen(),  // Startpagina is MainScreen
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/home': (context) => MainScreen(),  // Zorg ervoor dat '/home' verwijst naar MainScreen
+      },
     );
   }
 }
@@ -18,7 +23,7 @@ class MyApp extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   final List<Widget> _screens = [
     HomeScreen(),
-    OefenenScreen(),  // Voeg OefenenScreen toe aan de lijst van schermen
+    OefenenScreen(),
   ];
 
   @override
@@ -32,6 +37,14 @@ class MainScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text('Game Deals'),
             backgroundColor: Colors.blue,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.login),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');  // Navigeer naar login scherm
+                },
+              ),
+            ],
           ),
           body: _screens[index],
           bottomNavigationBar: BottomNavigationBar(
@@ -56,8 +69,8 @@ class MainScreen extends StatelessWidget {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.school),  // Deze icon kan voor 'Oefenen' worden gebruikt
-                label: 'Oefenen',  // Dit label toont Oefenen
+                icon: Icon(Icons.school),
+                label: 'Oefenen',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.info),
