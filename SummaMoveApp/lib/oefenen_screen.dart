@@ -30,7 +30,13 @@ class _OefenenScreenState extends State<OefenenScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Er is een fout opgetreden'));
+            // Toon de foutmelding in de UI
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('Geen oefeningen gevonden'));
           }
@@ -44,7 +50,6 @@ class _OefenenScreenState extends State<OefenenScreen> {
               return ListTile(
                 title: Text(oefening.name),
                 onTap: () {
-                  // Navigeer naar detailpagina van oefening
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -59,4 +64,4 @@ class _OefenenScreenState extends State<OefenenScreen> {
       ),
     );
   }
-}
+  }
