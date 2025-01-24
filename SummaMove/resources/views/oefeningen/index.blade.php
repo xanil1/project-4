@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Knop om een nieuwe oefening aan te maken, rechts uitgelijnd -->
+            <!-- Knop om een nieuwe oefening aan te maken -->
             <div class="mb-4 flex justify-end">
                 <a href="{{ route('oefeningen.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                     Nieuwe oefening
